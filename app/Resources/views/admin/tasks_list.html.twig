@@ -16,6 +16,12 @@
                     </h4>
                     <h4><a href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
                     <p>{{ task.content }}</p>
+                    {% if task.user %}
+                        <p>user : {{ task.user }}</p>
+                    {% else %}
+                        <p>user : anonyme</p>
+                    {% endif %}
+                    
                 </div>
                 <div>
                     <form action="{{ path('task_toggle', {'id' : task.id }) }}">
@@ -30,13 +36,13 @@
             </div>
         </div>
         {% else %}
-            {% if 'done' in app.request.attributes.get('_route') %}
+            {% if 'done' %}
                 <div class="alert alert-warning" role="alert">
-                    Il n'y a pas encore de tâche terminée.
+                    Il n'y a pas encore de tâche terminée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
                 </div>
             {% else %}
                 <div class="alert alert-warning" role="alert">
-                    Il n'y a pas encore de tâche enregistrée.
+                    Il n'y a pas encore de tâche enregistrée. <a href="{{ path('task_create') }}" class="btn btn-warning pull-right">Créer une tâche</a>
                 </div>
             {% endif %}
         {% endfor %}
