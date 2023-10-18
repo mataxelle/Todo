@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "symfony/dotenv": "^4.0",
+        "symfony/maker-bundle": "^1.39",
         "symfony/phpunit-bridge": "^4.0",
         "symfony/stopwatch": "^4.0",
         "symfony/web-profiler-bundle": "^4.0"
