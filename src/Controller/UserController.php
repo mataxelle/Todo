@@ -1,17 +1,22 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\User;
-use AppBundle\Form\UserType;
+use App\Entity\User;
+use App\Form\UserType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends Controller
-{
+class UserController extends AbstractController
+{    
     /**
      * @Route("/users/create", name="user_create")
+     * 
+     * CreateAction
+     *
+     * @param  Request $request Request
+     * @return void
      */
     public function createAction(Request $request)
     {
@@ -37,9 +42,15 @@ class UserController extends Controller
 
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
-
+    
     /**
      * @Route("/users/{id}/edit", name="user_edit")
+     * 
+     * EditAction
+     *
+     * @param  User    $user    User
+     * @param  Request $request Request
+     * @return void
      */
     public function editAction(User $user, Request $request)
     {

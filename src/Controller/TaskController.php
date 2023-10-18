@@ -1,44 +1,62 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace App\Controller;
 
-use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
-use AppBundle\Form\TaskType;
+use App\Entity\Task;
+use App\Entity\User;
+use App\Form\TaskType;
+use App\Repository\TaskRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class TaskController extends Controller
-{
+class TaskController extends AbstractController
+{    
     /**
-     * @Route("/tasks", name="task_list")
+     * @Route("user/{id}/tasks", name="task_list")
+     * 
+     * ListAction
+     *
+     * @param  TaskRepository $taskRepository TaskRepository
+     * @param  User           $user           User
+     * @return void
      */
-    public function listAction()
+    public function listAction(TaskRepository $taskRepository, User $user)
     {
-        $tasks = $this->getDoctrine()->getRepository('AppBundle:Task')->findByUser($this->getUser());
+        $tasks = $taskRepository->findByUser($user);
 
         return $this->render('task/list.html.twig',
         [
             'tasks' => $tasks
         ]);
     }
-
+  
     /**
-     * @Route("/done", name="done_task_list")
+     * @Route("user/{id}/done", name="done_task_list")
+     * 
+     * DoneListAction
+     *
+     * @param  TaskRepository $taskRepository TaskRepository
+     * @param  User           $user           User
+     * @return void
      */
-    public function doneListAction()
+    public function doneListAction(TaskRepository $taskRepository, User $user)
     {
-        $tasks = $this->getDoctrine()->getRepository('AppBundle:Task')->doneTaskByUser($this->getUser());
+        $tasks = $taskRepository->doneTasksByUser($user);
 
         return $this->render('task/list.html.twig',
         [
             'tasks' => $tasks
         ]);
     }
-
+    
     /**
-     * @Route("/tasks/create", name="task_create")
+     * @Route("/task/create", name="task_create")
+     * 
+     * CreateAction
+     *
+     * @param  Request $request Request
+     * @return void
      */
     public function createAction(Request $request)
     {
@@ -57,14 +75,20 @@ class TaskController extends Controller
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
-            return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
-
+   
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
+     * 
+     * EditAction
+     *
+     * @param  Task    $task    Task
+     * @param  Request $request Request
+     * @return void
      */
     public function editAction(Task $task, Request $request)
     {
@@ -77,7 +101,7 @@ class TaskController extends Controller
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_list');
+            return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
@@ -85,9 +109,14 @@ class TaskController extends Controller
             'task' => $task,
         ]);
     }
-
+    
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
+     * 
+     * ToggleTaskAction
+     *
+     * @param  Tast $task Task
+     * @return void
      */
     public function toggleTaskAction(Task $task)
     {
@@ -96,11 +125,16 @@ class TaskController extends Controller
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
     }
-
+    
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
+     * 
+     * DeleteTaskAction
+     *
+     * @param  Task $task
+     * @return void
      */
     public function deleteTaskAction(Task $task)
     {
@@ -110,6 +144,6 @@ class TaskController extends Controller
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
     }
 }

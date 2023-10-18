@@ -1,11 +1,11 @@
 security:
     encoders:
-        AppBundle\Entity\User: bcrypt
+        App\Entity\User: bcrypt
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         app_user_provider:
-            entity: { class: AppBundle\Entity\User, property: username }
+            entity: { class: App\Entity\User, property: username }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

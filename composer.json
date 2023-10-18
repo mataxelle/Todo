@@ -4,13 +4,11 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle",
             "App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\AppBundle\\": "tests/AppBundle",
             "App\\Tests\\": "tests/"
         }
     },
@@ -20,7 +18,7 @@
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.5",
-        "sensio/framework-extra-bundle": "^3.0.2",
+        "sensio/framework-extra-bundle": "^5.0",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "^4.0",
         "symfony/console": "^4.0",
