@@ -59,6 +59,8 @@
                     {% block header_title %}
                         {% if not app.user %}
                             <h1>Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !</h1>
+                        {% elseif app.user and 'homepage' == app.request.attributes.get('_route') %}
+                            <h1>Bienvenue {{ app.user.name }} !</h1>
                         {% endif %}
                     {% endblock %}
                     {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">{% endblock %}

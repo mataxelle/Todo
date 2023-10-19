@@ -1,19 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% if error %}
-        <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+{% block header_title %}
+    <h1>Connexion</h1>
+{% endblock %}
 
-    <form action="{{ path('login_check') }}" method="post">
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+{% block body %}
+
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3 col s12 m6 l6 offset-m3 offset-l3">
+                Tu es actuellement connecté en tant que {{ app.user.name }}, <a href="{{ path('logout') }}">Déconnexion</a>
+            </div>
+        {% endif %}
+        
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" value="{{ last_username }}" class="form-control" required autofocus>
 
         <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="_password" />
+        <input type="password" id="password" name="password" class="form-control" required>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <button class="btn btn-success" type="submit">Se connecter</button>
     </form>
 
-    <a href="">Créer un compte</a>
+    <a href="{{ path('user_create') }}">Créer un compte</a>
 {% endblock %}

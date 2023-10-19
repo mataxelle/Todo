@@ -32,7 +32,7 @@
                                 user
                             {% endif %} 
                         </td>
-                        <td>{{ user.username }}</td>
+                        <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>
                             <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
