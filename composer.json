@@ -13,11 +13,10 @@
         }
     },
     "require": {
-        "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/doctrine-cache-bundle": "^1.2",
+        "php": ">=7.4.26",
+        "doctrine/doctrine-bundle": "^2.5",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.5",
+        "doctrine/orm": "^2.8",
         "sensio/framework-extra-bundle": "^5.0",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "4.4.*",
