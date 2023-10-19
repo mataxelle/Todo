@@ -3,18 +3,22 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
-{
+{    
     /**
      * @Route("/login", name="login")
+     *
+     * Logg a user
+     *
+     * @param  AuthenticationUtils $authenticationUtils AuthenticationUtils
+     * @return Response
      */
-    public function loginAction(Request $request)
+    public function loginAction(AuthenticationUtils $authenticationUtils): Response
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
-
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -34,9 +38,13 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="logout")
+     *
+     * Logout a user
+     *
+     * @return void
      */
     public function logoutCheck()
     {
-        // This code is never executed.
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
