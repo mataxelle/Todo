@@ -16,6 +16,7 @@ class TaskFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
+                'label' => 'Titre',
                 'constraints' => [
                     new Length([
                         'min' => 2,
@@ -24,6 +25,7 @@ class TaskFormType extends AbstractType
                 ],
             ])
             ->add('content', TextareaType::class, [
+                'label' => 'Contenu',
                 'constraints' => [
                     new Length([
                         'min' => 2,
