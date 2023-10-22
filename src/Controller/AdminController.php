@@ -8,11 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
-{
+{    
     /**
      * @Route("/admin/tasks", name="admin_tasks_list")
-     */    
-    /**
+     *
      * TaskslistAction
      *
      * @param  TaskRepository $taskRepository TaskRepository
@@ -27,11 +26,10 @@ class AdminController extends AbstractController
             'tasks' => $tasks
         ]);
     }
-
+    
     /**
      * @Route("/admin/users", name="admin_users_list")
-     */    
-    /**
+     *
      * UserslistAction
      *
      * @param  UserRepository $userRepository UserRepository
