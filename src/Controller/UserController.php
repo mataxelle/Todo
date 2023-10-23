@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {    
@@ -17,17 +17,18 @@ class UserController extends AbstractController
      *
      * CreateAction
      *
-     * @param  Request $request Request
-     * @return void
+     * @param  Request                     $request            Request
+     * @param  UserPasswordHasherInterface $UserPasswordHasher UserPasswordHasherInterface
+     * @return Response
      */
-    public function createAction(Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
+    public function createAction(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $userPasswordEncoder->encodePassword($user, $user->getPassword());
+            $password = $userPasswordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
 
@@ -50,18 +51,19 @@ class UserController extends AbstractController
      *
      * EditAction
      *
-     * @param  User    $user    User
-     * @param  Request $request Request
-     * @return void
+     * @param  User                        $user               User
+     * @param  Request                     $request            Request
+     * @param  UserPasswordHasherInterface $UserPasswordHasher UserPasswordHasherInterface
+     * @return Response
      */
-    public function editAction(User $user, Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
+    public function editAction(User $user, Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(UserFormType::class, $user);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $userPasswordEncoder->encodePassword($user, $user->getPassword());
+            $password = $userPasswordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
 
             $this->getDoctrine()->getManager()->flush();

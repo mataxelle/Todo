@@ -2,55 +2,45 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="Un utilisateur existe déjà avec cette adresse email.")
- */
-class User implements UserInterface
+#[ORM\Table(name: 'user')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=60, unique=true)
-     * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
-     * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
-     */
+    #[ORM\Column(type: 'string', length: 60, unique: true)]
+    #[Assert\Email(message: "Vous devez saisir une adresse email.")]
+    #[Assert\NotBlank(message: 'Vous devez saisir une adresse email')]
     private $email;
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank()]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
-     */
+    #[ORM\Column(type: 'string', length: 25, unique: true)]
+    #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
     private $name;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $roles = [];
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
-     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class, orphanRemoval: true)]
     private $tasks;
 
     public function __construct()
@@ -58,16 +48,32 @@ class User implements UserInterface
         $this->tasks = new ArrayCollection();
     }
 
+    /**
+     * Get Id
+     *
+     * @return int
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Get email
+     *
+     * @return string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Set Email
+     *
+     * @param  string $email Email
+     * @return self
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -80,19 +86,33 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
     /**
-     * @see UserInterface
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
         return (string) $this->password;
     }
-
+    
+    /**
+     * Set password
+     *
+     * @param  string $password Password
+     * @return self
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -117,11 +137,22 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * Get name
+     *
+     * @return string
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * Tet name
+     *
+     * @param  string $name Name
+     * @return self
+     */
     public function setName($name): self
     {
         $this->name = $name;
@@ -141,6 +172,12 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * Set Roles
+     *
+     * @param  array $roles Roles
+     * @return self
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -156,6 +193,12 @@ class User implements UserInterface
         return $this->tasks;
     }
 
+    /**
+     * Add task
+     *
+     * @param  Task $task Task
+     * @return self
+     */
     public function addTask(Task $task): self
     {
         if (!$this->tasks->contains($task)) {
@@ -166,6 +209,12 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * Remove task
+     *
+     * @param  Task $task Task
+     * @return self
+     */
     public function removeTask(Task $task): self
     {
         if ($this->tasks->removeElement($task)) {
