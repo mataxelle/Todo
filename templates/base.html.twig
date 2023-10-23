@@ -30,15 +30,14 @@
         <div class="container">
             <div class="row">
                 {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-                <a href="{{ path('user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
+                    <a href="{{ path('admin_users_list') }}" class="btn btn-warning">Liste utilisateurs</a>
+                    <a href="{{ path('admin_tasks_list') }}" class="btn btn-info">Liste tâches</a>
                 {% endif %}
 
                 {% if app.user %}
+                <a href="{{ path('user_edit_password', {'id' : app.user.id }) }}" class="btn btn-primary">Modifier mon mot de passe</a>
+                <a href="{{ path('user_edit', {'id' : app.user.id }) }}" class="btn btn-primary">Modifier mes informations</a>
                 <a href="{{ path('logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
-                {% endif %}
-
-                {% if not app.user and 'login' != app.request.attributes.get('_route') %}
-                <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
                 {% endif %}
             </div>
 

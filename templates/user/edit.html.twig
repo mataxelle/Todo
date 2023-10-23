@@ -5,10 +5,20 @@
 
 {% block body %}
     <div class="row">
-        {{ form_start(form, {'action' : path('user_edit', {'id' : user.id})}) }}
-        {{ form_widget(form) }}
-
-        <button type="submit" class="btn btn-success pull-right">Modifier</button>
+        {{ form_start(form) }}
+            <div class="input-field mb-3">
+	            {{ form_label(form.name, 'Nom') }}
+	            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+	            <span class="error">{{ form_errors(form.name) }}</span>
+            </div>
+            <div class="input-field mb-3">
+	            {{ form_label(form.email, 'Email') }}
+	            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+	            <span class="error">{{ form_errors(form.email) }}</span>
+            </div>
+            <div class="mb-3">
+	            <input type="submit" class="btn btn-success" value="Modifier" formnovalidate>
+            </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

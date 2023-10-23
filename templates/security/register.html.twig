@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block header_title %}<h1>Inscription</h1>{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <div class="input-field mb-3">
+	        {{ form_label(form.name, 'Nom') }}
+	        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+	        <span class="error">{{ form_errors(form.name) }}</span>
+        </div>
+        <div class="input-field mb-3">
+	        {{ form_label(form.email, 'Email') }}
+	        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+	        <span class="error">{{ form_errors(form.email) }}</span>
+        </div>
+        <div class="input-field mb-3">
+	        {{ form_label(form.password.first, 'Mot de passe') }}
+	        {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
+            {{ form_label(form.password.second, 'Confirmation de mot de passe') }}
+	        {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+	        <input type="submit" class="btn btn-success" value="S'inscrire" formnovalidate>
+        </div>
+    {{ form_end(form) }}
+
+    <a href="{{ path('login') }}">Se connecter</a>
+{% endblock %}
