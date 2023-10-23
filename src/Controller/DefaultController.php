@@ -9,7 +9,7 @@ class DefaultController extends AbstractController
 {    
     /**
      * @Route("/", name="homepage")
-     * 
+     *
      * IndexAction
      *
      * @return void

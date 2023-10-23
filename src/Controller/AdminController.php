@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -15,9 +16,9 @@ class AdminController extends AbstractController
      * TaskslistAction
      *
      * @param  TaskRepository $taskRepository TaskRepository
-     * @return void
+     * @return Response
      */
-    public function taskslistAction(TaskRepository $taskRepository)
+    public function taskslistAction(TaskRepository $taskRepository): Response
     {
         $tasks = $taskRepository->findAll();
 
@@ -26,16 +27,16 @@ class AdminController extends AbstractController
             'tasks' => $tasks
         ]);
     }
-    
+
     /**
      * @Route("/admin/users", name="admin_users_list")
      *
      * UserslistAction
      *
      * @param  UserRepository $userRepository UserRepository
-     * @return void
+     * @return Response
      */
-    public function userslistAction(UserRepository $userRepository)
+    public function userslistAction(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
 

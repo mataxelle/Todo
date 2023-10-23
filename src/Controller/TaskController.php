@@ -6,9 +6,11 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskController extends AbstractController
 {    
@@ -55,10 +57,11 @@ class TaskController extends AbstractController
      *
      * CreateAction
      *
-     * @param  Request $request Request
-     * @return void
+     * @param  Request                $request       Request
+     * @param  EntityManagerInterface $entityManager EntityManager
+     * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, EntityManagerInterface $entityManager): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskFormType::class, $task);
@@ -70,8 +73,7 @@ class TaskController extends AbstractController
             $task->setCreatedAt(new \DateTime());
             $task->setIsDone(0);
 
-            $entityManager = $this->getDoctrine()->getManager();
-
+            $task = $form->getData();
             $entityManager->persist($task);
             $entityManager->flush();
 
@@ -88,18 +90,22 @@ class TaskController extends AbstractController
      *
      * EditAction
      *
-     * @param  Task    $task    Task
-     * @param  Request $request Request
-     * @return void
+     * @param  Task                   $task          Task
+     * @param  Request                $request       Request
+     * @param  EntityManagerInterface $entityManager EntityManager
+     * @return Response
      */
-    public function editAction(Task $task, Request $request)
+    public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TaskFormType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            $task = $form->getData();
+            $entityManager->persist($task);
+            $entityManager->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -117,13 +123,15 @@ class TaskController extends AbstractController
      *
      * ToggleTaskAction
      *
-     * @param  Tast $task Task
-     * @return void
+     * @param  Tast                   $task          Task
+     * @param  EntityManagerInterface $entityManager EntityManager
+     * @return Response
      */
-    public function toggleTaskAction(Task $task)
+    public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {
         $task->toggle(!$task->isDone());
-        $this->getDoctrine()->getManager()->flush();
+
+        $entityManager->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -135,12 +143,12 @@ class TaskController extends AbstractController
      *
      * DeleteTaskAction
      *
-     * @param  Task $task
-     * @return void
+     * @param  Task                   $task          Task
+     * @param  EntityManagerInterface $entityManager EntityManager
+     * @return Response
      */
-    public function deleteTaskAction(Task $task)
+    public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($task);
         $entityManager->flush();
 
