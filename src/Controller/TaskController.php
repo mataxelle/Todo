@@ -69,7 +69,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $task->setUser($this->getUser());
+            $task->setCreatedBy($this->getUser());
             $task->setCreatedAt(new \DateTime());
             $task->setIsDone(0);
 
@@ -79,7 +79,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
-            return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
+            return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
@@ -109,7 +109,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
+            return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
@@ -135,7 +135,7 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
+        return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
     }
 
     /**
@@ -154,6 +154,6 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list', ['id' => $task->getUser()->getId()]);
+        return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
     }
 }

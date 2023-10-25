@@ -50,7 +50,7 @@ class TaskRepository extends ServiceEntityRepository
     public function findByUser(User $user)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.user = :user')
+            ->andWhere('t.createdBy = :user')
             ->setParameter('user', $user)
             ->andWhere('t.isDone = 0')
             ->getQuery()
@@ -66,7 +66,7 @@ class TaskRepository extends ServiceEntityRepository
     public function doneTasksByUser(User $user)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.user = :user')
+            ->andWhere('t.createdBy = :user')
             ->setParameter('user', $user)
             ->andWhere('t.isDone = 1')
             ->getQuery()

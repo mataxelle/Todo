@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,32 +17,34 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 60, unique: true)]
     #[Assert\Email(message: "Vous devez saisir une adresse email.")]
     #[Assert\NotBlank(message: 'Vous devez saisir une adresse email')]
-    private $email;
+    private ?string $email = null;
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank()]
-    private $password;
+    private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 25, unique: true)]
     #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
-    private $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Task::class, orphanRemoval: true)]
-    private $tasks;
+    private Collection $tasks;
 
     public function __construct()
     {
@@ -203,7 +206,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->tasks->contains($task)) {
             $this->tasks[] = $task;
-            $task->setUser($this);
+            $task->setCreatedBy($this);
         }
 
         return $this;
@@ -218,8 +221,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTask(Task $task): self
     {
         if ($this->tasks->removeElement($task)) {
-            if ($task->getUser() === $this) {
-                $task->setUser(null);
+            if ($task->getCreatedBy() === $this) {
+                $task->setCreatedBy(null);
             }
         }
 

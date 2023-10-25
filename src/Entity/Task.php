@@ -2,36 +2,34 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\BlameableEntity;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'task')]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
+    use BlameableEntity;
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
-
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $user;
-
-    #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: 'Vous devez saisir un titre')]
-    private $title;
+    private ?string $title = null;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Vous devez saisir un contenu')]
-    private $content;
+    private ?string $content = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isDone;
+    private ?bool $isDone = null;
 
     /**
      * Get id
@@ -41,41 +39,6 @@ class Task
     public function getId(): ?int
     {
         return $this->id;
-    }
-    
-    /**
-     * Get User
-     *
-     * @return User
-     */
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-    
-    /**
-     * Set User
-     *
-     * @param  User $user User
-     * @return self
-     */
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**

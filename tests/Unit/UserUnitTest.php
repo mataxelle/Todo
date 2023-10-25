@@ -49,7 +49,7 @@ class UserUnitTest extends TestCase
         $this->assertEmpty($user->getId());
     }
 
-    public function testGetAddRemovePost() {
+    public function testGetAddRemoveTask() {
         $user = new User();
         $task = new Task();
 

@@ -7,7 +7,7 @@ use App\Entity\User;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
-class PostUnitTest extends TestCase
+class TaskUnitTest extends TestCase
 {
     public function testIsTrue()
     {
@@ -19,13 +19,15 @@ class PostUnitTest extends TestCase
              ->setContent('contenu')
              ->setIsDone(true)
              ->setCreatedAt($datetime)
-             ->setUser($user);
+             ->setUpdatedAt($datetime)
+             ->setCreatedBy($user);
 
         $this->assertTrue($task->getTitle() === 'titre');
         $this->assertTrue($task->getContent() === 'contenu');
         $this->assertTrue($task->isDone() === true);
         $this->assertTrue($task->getCreatedAt() === $datetime);
-        $this->assertTrue($task->getUser() === $user);
+        $this->assertFalse($task->getUpdatedAt() === new DateTime());
+        $this->assertTrue($task->getCreatedBy() === $user);
     }
 
     public function testIsFalse()
@@ -38,13 +40,15 @@ class PostUnitTest extends TestCase
              ->setContent('contenu')
              ->setIsDone(true)
              ->setCreatedAt($datetime)
-             ->setUser($user);
+             ->setUpdatedAt($datetime)
+             ->setCreatedBy($user);
 
         $this->assertFalse($task->getTitle() === 'false');
         $this->assertFalse($task->getContent() === 'false');
         $this->assertFalse($task->isDone() === false);
         $this->assertFalse($task->getCreatedAt() === new DateTime());
-        $this->assertFalse($task->getUser() === new User());
+        $this->assertFalse($task->getUpdatedAt() === new DateTime());
+        $this->assertFalse($task->getCreatedBy() === new User());
     }
 
     public function testIsEmpty()
@@ -55,7 +59,8 @@ class PostUnitTest extends TestCase
         $this->assertEmpty($task->getContent());
         $this->assertEmpty($task->isDone());
         $this->assertEmpty($task->getCreatedAt());
-        $this->assertEmpty($task->getUser());
+        $this->assertEmpty($task->getUpdatedAt());
+        $this->assertEmpty($task->getCreatedBy());
         $this->assertEmpty($task->getId());
     }
 }
