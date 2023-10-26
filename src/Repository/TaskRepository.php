@@ -29,14 +29,14 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * FindllOrderedByName
+     * FindllOrderedByDate
      *
      * @return void
      */
-    public function findAllOrderedByName()
+    public function findAllOrderedByDate()
     {
         return $this->createQueryBuilder('t')
-            ->orderBy('t.title ASC')
+            ->orderBy('t.updatedAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

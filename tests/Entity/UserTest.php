@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Entity;
 
 use App\Entity\Task;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
-class UserUnitTest extends TestCase
+class UserTest extends TestCase
 {
     public function testIsTrue(): void
     {

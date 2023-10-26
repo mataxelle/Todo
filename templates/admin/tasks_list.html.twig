@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block header_title %}<h1>Liste des tâches</h1>{% endblock %}
+
 {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
@@ -16,10 +18,10 @@
                     </h4>
                     <h4><a href="{{ path('task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
                     <p>{{ task.content }}</p>
-                    {% if task.user %}
-                        <p>user : {{ task.user }}</p>
+                    {% if task.createdBy %}
+                        <p>De : {{ task.createdBy }}</p>
                     {% else %}
-                        <p>user : anonyme</p>
+                        <p>De : anonyme</p>
                     {% endif %}
                     
                 </div>

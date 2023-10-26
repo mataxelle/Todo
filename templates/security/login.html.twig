@@ -6,7 +6,7 @@
 
 {% block body %}
 
-    <form method="post">
+    <form action="{{ path('login') }}" method="post" name="login">
         {% if error %}
             <div class="alert alert-danger" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -19,7 +19,7 @@
         
         <div>
             <label for="email">Email :</label>
-            <input type="email" id="email" name="email" value="{{ last_username }}" class="form-control" required autofocus>
+            <input type="email" id="email" name="email" value="{{ last_username }}" class="form-control" autocomplete="email" required autofocus>
         </div>
         <div>
             <label for="password">Mot de passe :</label>

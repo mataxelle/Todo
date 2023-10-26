@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Entity;
 
 use App\Entity\Task;
 use App\Entity\User;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
-class TaskUnitTest extends TestCase
+class TaskTest extends TestCase
 {
     public function testIsTrue()
     {

@@ -63,6 +63,10 @@
                         {% endif %}
                     {% endblock %}
                     {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_homepage.jpg') }}" alt="todo list">{% endblock %}
+
+                    {% if not app.user and 'login' != app.request.attributes.get('_route') %}
+                        <a href="{{ path('login') }}" class="btn btn-success">Se connecter</a>
+                    {% endif %}
                 </div>
             </div>
 

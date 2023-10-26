@@ -20,7 +20,7 @@ class AdminController extends AbstractController
      */
     public function taskslistAction(TaskRepository $taskRepository): Response
     {
-        $tasks = $taskRepository->findAll();
+        $tasks = $taskRepository->findAllOrderedByDate();
 
         return $this->render('admin/tasks_list.html.twig',
         [
