@@ -20,22 +20,20 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'login';
-
-    private UrlGeneratorInterface $urlGenerator;
-
+    
     /**
      * __construct
      *
      * @param  UrlGeneratorInterface $urlGenerator UrlGenerator
      * @return void
      */
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
-    }
 
+    }
+    
     /**
-     * Authenticate
+     * authenticate
      *
      * @param  Request $request Request
      * @return Passport
@@ -50,13 +48,13 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
             [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+             new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
         );
     }
-
+    
     /**
-     * OnAuthenticationSuccess
+     * onAuthenticationSuccess
      *
      * @param  Request        $request      Request
      * @param  TokenInterface $token        TokenInterface
@@ -73,9 +71,9 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
         // Throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
-
+    
     /**
-     * GetLoginUrl
+     * getLoginUrl
      *
      * @param  Request $request Request
      * @return string
