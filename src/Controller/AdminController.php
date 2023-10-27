@@ -23,7 +23,7 @@ class AdminController extends AbstractController
      * @return Response
      */
     #[Security("is_granted('ROLE_ADMIN')")]
-    #[Route('/tasks', name: 'tasks_list')]
+    #[Route('/tasks', name: 'tasks_list', methods: ['GET'])]
     public function taskslistAction(TaskRepository $taskRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $taskRepository->findAllOrderedByDate();
@@ -48,7 +48,7 @@ class AdminController extends AbstractController
      * @return Response
      */
     #[Security("is_granted('ROLE_ADMIN')")]
-    #[Route('/users', name: 'users_list')]
+    #[Route('/users', name: 'users_list', methods: ['GET'])]
     public function userslistAction(UserRepository $userRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $userRepository->findAll();

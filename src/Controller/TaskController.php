@@ -17,17 +17,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TaskController extends AbstractController
 {    
     /**
-     * @Route("user/{id}/tasks", name="task_list")
+     * Get tasks list
      *
-     * ListAction
-     *
-     * @param  TaskRepository $taskRepository TaskRepository
-     * @param  User           $user           User
+     * @param  TaskRepository     $taskRepository     TaskRepository
+     * @param  User               $user2               User
+     * @param  PaginatorInterface $paginatorInterface PaginatorInterface
+     * @param  Request            $request            Request
      * @return void
      */
-    public function listAction(TaskRepository $taskRepository, User $user, PaginatorInterface $paginatorInterface, Request $request)
+    #[Route('/user/{id}/tasks', name: 'task_list', methods: ['GET'])]
+    #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
+    public function listAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request)
     {
-        $data = $taskRepository->findByUser($user);
+        $data = $taskRepository->findByUser($user2);
         $tasks = $paginatorInterface->paginate(
             $data,
             $request->query->getInt('page', 1),
@@ -41,17 +43,19 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("user/{id}/done", name="done_task_list")
+     * Get tasks done list
      *
-     * DoneListAction
-     *
-     * @param  TaskRepository $taskRepository TaskRepository
-     * @param  User           $user           User
+     * @param  TaskRepository     $taskRepository     TaskRepository
+     * @param  User               $user2               User
+     * @param  PaginatorInterface $paginatorInterface PaginatorInterface
+     * @param  Request            $request            Request
      * @return void
      */
-    public function doneListAction(TaskRepository $taskRepository, User $user, PaginatorInterface $paginatorInterface, Request $request)
+    #[Route('/user/{id}/done', name: 'done_task_list', methods: ['GET'])]
+    #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
+    public function doneListAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request)
     {
-        $data = $taskRepository->doneTasksByUser($user);
+        $data = $taskRepository->doneTasksByUser($user2);
         $tasks = $paginatorInterface->paginate(
             $data,
             $request->query->getInt('page', 1),
@@ -65,14 +69,13 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/task/create", name="task_create")
-     *
-     * CreateAction
+     * Create a task
      *
      * @param  Request                $request       Request
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
+    #[Route('/task/create', name: 'task_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request, EntityManagerInterface $entityManager): Response
     {
         $task = new Task();
@@ -98,15 +101,15 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
-     *
-     * EditAction
+     * Edit a task
      *
      * @param  Task                   $task          Task
      * @param  Request                $request       Request
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
+    #[Route('/tasks/{id}/edit', name: 'task_edit', methods: ['GET', 'PUT'])]
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TaskFormType::class, $task);
@@ -131,14 +134,14 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/toggle", name="task_toggle")
-     *
-     * ToggleTaskAction
+     * Finished a task
      *
      * @param  Tast                   $task          Task
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
+    #[Route('/tasks/{id}/toggle', name: 'task_toggle', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {
         $task->toggle(!$task->isDone());
@@ -151,14 +154,14 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
-     *
-     * DeleteTaskAction
+     * Delete a task
      *
      * @param  Task                   $task          Task
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
+    #[Route('/tasks/{id}/delete', name: 'task_delete', methods: ['DELETE'])]
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($task);
