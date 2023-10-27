@@ -108,7 +108,7 @@ class TaskController extends AbstractController
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
-    #[Route('/tasks/{id}/edit', name: 'task_edit', methods: ['GET', 'PUT'])]
+    #[Route('/task/{id}/edit', name: 'task_edit', methods: ['GET', 'POST'])]
     #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -140,7 +140,7 @@ class TaskController extends AbstractController
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
-    #[Route('/tasks/{id}/toggle', name: 'task_toggle', methods: ['GET', 'POST'])]
+    #[Route('/task/{id}/toggle', name: 'task_toggle', methods: ['GET', 'POST'])]
     #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {
@@ -160,7 +160,7 @@ class TaskController extends AbstractController
      * @param  EntityManagerInterface $entityManager EntityManager
      * @return Response
      */
-    #[Route('/tasks/{id}/delete', name: 'task_delete', methods: ['DELETE'])]
+    #[Route('/task/{id}/delete', name: 'task_delete', methods: ['GET', 'DELETE'])]
     #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): Response
     {

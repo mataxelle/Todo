@@ -56,7 +56,7 @@ class UserController extends AbstractController
      * @param  EntityManagerInterface      $entityManager      EntityManager
      * @return Response
      */
-    #[Route('/user/{id}/edit', name: 'user_edit', methods: ['GET', 'PUT'])]
+    #[Route('/user/{id}/edit', name: 'user_edit', methods: ['GET', 'PATCH'])]
     #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function editAction(User $user2, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -85,7 +85,7 @@ class UserController extends AbstractController
      * @param  EntityManagerInterface      $entityManager      EntityManager
      * @return Response
      */
-    #[Route('/user/{id}/edit/password', name: 'user_edit_password', methods: ['GET', 'PUT'])]
+    #[Route('/user/{id}/edit/password', name: 'user_edit_password', methods: ['GET', 'PATCH'])]
     #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
     public function passwordEditAction(User $user2, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {

@@ -15,6 +15,7 @@ class UserEditFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->setMethod('PATCH')
             ->add('name', TextType::class, [
                 'required' => false,
                 'constraints' => [

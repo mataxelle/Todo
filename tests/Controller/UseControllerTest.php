@@ -7,21 +7,22 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserControllerTest extends WebTestCase
+class UseControllerTest extends WebTestCase
 {
     /**
      * not working
      */
-    /*public function testShouldBeRegisterSuccess(): void
+    public function testShouldBeRegisterSuccess(): void
     {
         $client = static::createClient();
 
         $urlGenerator = $client->getContainer()->get("router");
         $crawler = $client->request('GET', $urlGenerator->generate('register'));
 
+        // Should change the user name and email every test
         $form = $crawler->filter("form[name=register_form]")->form([
-            'register_form[name]' => "Stéphanie Marthe",
-            'register_form[email]' => "usertest@email.com",
+            'register_form[name]' => "Mimy Donde",
+            'register_form[email]' => "usertest1@email.com",
             'register_form[password][first]' => "azertyuiop",
             'register_form[password][second]' => "azertyuiop"
         ]);
@@ -31,7 +32,7 @@ class UserControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertRouteSame('login');
-    }*/
+    }
 
     public function testShouldEditUser(): void
     {

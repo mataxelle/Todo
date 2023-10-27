@@ -22,15 +22,9 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
 
-        // $button = $crawler->filter('.btn.btn-success');
-        // $this->assertEquals(1, count($button));
-
-        // $button = $crawler->filter('.btn.btn-primary');
-        //$this->assertEquals(3, count($button));
-
         $form = $crawler->filter('form[name=task_form]')->form([
-            'task_form[title]' => "First task",
-            'task_form[content]' => "Task description"
+            'task_form[title]' => "Nouvelle task",
+            'task_form[content]' => "Task description nouvelle"
         ]);
         $client->submit($form);
 
@@ -38,7 +32,7 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été ajoutée.');
-        $this->assertRouteSame('task_list');
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 
     public function testShouldDisplayUsertasksList(): void
@@ -57,7 +51,7 @@ class TaskControllerTest extends WebTestCase
         );
 
         $this->assertResponseIsSuccessful();
-        $this->assertRouteSame('task_list');
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 
     public function testShouldDisplayUsertasksDoneList(): void
@@ -76,7 +70,7 @@ class TaskControllerTest extends WebTestCase
         );
 
         $this->assertResponseIsSuccessful();
-        $this->assertRouteSame('done_task_list');
+        $this->assertRouteSame('done_task_list', ['id' => $user->getId()]);
     }
 
     public function testShouldEditTask(): void
@@ -102,13 +96,13 @@ class TaskControllerTest extends WebTestCase
             'task_form[title]' => "First task update",
             'task_form[content]' => "Task description update"
         ]);
-        $client->submit($form);
+                $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été modifiée.');
-        $this->assertRouteSame('task_list');
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 
     public function testShouldDeleteTask(): void
@@ -134,7 +128,6 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été supprimée.');
-        $this->assertRouteSame('task_list');
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
-
 }
