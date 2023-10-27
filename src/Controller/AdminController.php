@@ -4,23 +4,34 @@ namespace App\Controller;
 
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/admin', name: 'admin_')]
 class AdminController extends AbstractController
 {    
     /**
-     * @Route("/admin/tasks", name="admin_tasks_list")
+     * Display all tasks
      *
-     * TaskslistAction
-     *
-     * @param  TaskRepository $taskRepository TaskRepository
+     * @param  TaskRepository     $taskRepository     TaskRepository
+     * @param  PaginatorInterface $paginatorInterface PaginatorInterface
+     * @param  Request            $request Request
      * @return Response
      */
-    public function taskslistAction(TaskRepository $taskRepository): Response
+    #[Security("is_granted('ROLE_ADMIN')")]
+    #[Route('/tasks', name: 'tasks_list')]
+    public function taskslistAction(TaskRepository $taskRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
-        $tasks = $taskRepository->findAllOrderedByDate();
+        $data = $taskRepository->findAllOrderedByDate();
+        $tasks = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            9
+        );
 
         return $this->render('admin/tasks_list.html.twig',
         [
@@ -29,16 +40,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users", name="admin_users_list")
+     * Display all users
      *
-     * UserslistAction
-     *
-     * @param  UserRepository $userRepository UserRepository
+     * @param  UserRepository     $userRepository     UserRepository
+     * @param  PaginatorInterface $paginatorInterface PaginatorInterface
+     * @param  Request            $request Request
      * @return Response
      */
-    public function userslistAction(UserRepository $userRepository): Response
+    #[Security("is_granted('ROLE_ADMIN')")]
+    #[Route('/users', name: 'users_list')]
+    public function userslistAction(UserRepository $userRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
-        $users = $userRepository->findAll();
+        $data = $userRepository->findAll();
+        $users = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('admin/users_list.html.twig',
         [

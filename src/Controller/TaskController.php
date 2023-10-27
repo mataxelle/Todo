@@ -7,6 +7,8 @@ use App\Entity\User;
 use App\Form\TaskFormType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,9 +25,14 @@ class TaskController extends AbstractController
      * @param  User           $user           User
      * @return void
      */
-    public function listAction(TaskRepository $taskRepository, User $user)
+    public function listAction(TaskRepository $taskRepository, User $user, PaginatorInterface $paginatorInterface, Request $request)
     {
-        $tasks = $taskRepository->findByUser($user);
+        $data = $taskRepository->findByUser($user);
+        $tasks = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            6
+        );
 
         return $this->render('task/list.html.twig',
         [
@@ -42,9 +49,14 @@ class TaskController extends AbstractController
      * @param  User           $user           User
      * @return void
      */
-    public function doneListAction(TaskRepository $taskRepository, User $user)
+    public function doneListAction(TaskRepository $taskRepository, User $user, PaginatorInterface $paginatorInterface, Request $request)
     {
-        $tasks = $taskRepository->doneTasksByUser($user);
+        $data = $taskRepository->doneTasksByUser($user);
+        $tasks = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1),
+            6
+        );
 
         return $this->render('task/list.html.twig',
         [
