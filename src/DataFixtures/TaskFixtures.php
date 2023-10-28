@@ -8,13 +8,15 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+/**
+ * @extends Fixture @implements DependentFixtureInterface
+ */
 class TaskFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * Loading
      *
-     * @param ObjectManager $manager Manager
-     *
+     * @param  ObjectManager $manager Manager
      * @return void
      */
     public function load(ObjectManager $manager): void

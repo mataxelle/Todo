@@ -14,8 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * @extends AbstractController
+ */
 class UserController extends AbstractController
-{    
+{
     /**
      * Create a user
      *

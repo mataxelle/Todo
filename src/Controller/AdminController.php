@@ -11,15 +11,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @extends AbstractController
+ */
 #[Route('/admin', name: 'admin_')]
 class AdminController extends AbstractController
-{    
+{
     /**
      * Display all tasks
      *
      * @param  TaskRepository     $taskRepository     TaskRepository
      * @param  PaginatorInterface $paginatorInterface PaginatorInterface
-     * @param  Request            $request Request
+     * @param  Request            $request            Request
      * @return Response
      */
     #[Security("is_granted('ROLE_ADMIN')")]
@@ -44,7 +47,7 @@ class AdminController extends AbstractController
      *
      * @param  UserRepository     $userRepository     UserRepository
      * @param  PaginatorInterface $paginatorInterface PaginatorInterface
-     * @param  Request            $request Request
+     * @param  Request            $request            Request
      * @return Response
      */
     #[Security("is_granted('ROLE_ADMIN')")]

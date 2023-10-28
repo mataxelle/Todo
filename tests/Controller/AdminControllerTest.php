@@ -7,7 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminControllerTest extends WebTestCase
-{
+{    
+    /**
+     * Test Should Display Admin Tasks List
+     *
+     * @return void
+     */
     public function testShouldDisplayAdminTasksList(): void
     {
         $client = static::createClient();
@@ -30,6 +35,11 @@ class AdminControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Liste des tâches');
     }
 
+    /**
+     * Test Should Display Admin UsersList
+     *
+     * @return void
+     */
     public function testShouldDisplayAdminUsersList(): void
     {
         $client = static::createClient();
@@ -51,5 +61,4 @@ class AdminControllerTest extends WebTestCase
 
         $this->assertSelectorTextContains('h1', 'Liste des utilisateurs');
     }
-
 }

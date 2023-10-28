@@ -29,11 +29,44 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * FindllOrderedByDate
+     * Save
      *
+     * @param  Task  $entity Entity
+     * @param  mixed $flush  Flush
      * @return void
      */
-    public function findAllOrderedByDate()
+    public function save(Task $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * Remove
+     *
+     * @param  Task $entity Entity
+     * @param  bool $flush  Flush
+     * @return void
+     */
+    public function remove(Task $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+
+    /**
+     * FindllOrderedByDate
+     *
+     * @return array
+     */
+    public function findAllOrderedByDate(): array
     {
         return $this->createQueryBuilder('t')
             ->orderBy('t.updatedAt', 'DESC')
@@ -45,9 +78,9 @@ class TaskRepository extends ServiceEntityRepository
      * FindByUser
      *
      * @param  User $user User
-     * @return void
+     * @return array
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.createdBy = :user')
@@ -61,9 +94,9 @@ class TaskRepository extends ServiceEntityRepository
      * doneTasksByUser
      *
      * @param  User $user User
-     * @return void
+     * @return array
      */
-    public function doneTasksByUser(User $user)
+    public function doneTasksByUser(User $user): array
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.createdBy = :user')

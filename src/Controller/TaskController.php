@@ -14,8 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @extends AbstractController
+ */
 class TaskController extends AbstractController
-{    
+{
     /**
      * Get tasks list
      *
@@ -23,11 +26,11 @@ class TaskController extends AbstractController
      * @param  User               $user2               User
      * @param  PaginatorInterface $paginatorInterface PaginatorInterface
      * @param  Request            $request            Request
-     * @return void
+     * @return Response
      */
     #[Route('/user/{id}/tasks', name: 'task_list', methods: ['GET'])]
     #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
-    public function listAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request)
+    public function listAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $taskRepository->findByUser($user2);
         $tasks = $paginatorInterface->paginate(
@@ -49,11 +52,11 @@ class TaskController extends AbstractController
      * @param  User               $user2               User
      * @param  PaginatorInterface $paginatorInterface PaginatorInterface
      * @param  Request            $request            Request
-     * @return void
+     * @return Response
      */
     #[Route('/user/{id}/done', name: 'done_task_list', methods: ['GET'])]
     #[Security("is_granted('ROLE_USER') and user === user2 || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
-    public function doneListAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request)
+    public function doneListAction(TaskRepository $taskRepository, User $user2, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $taskRepository->doneTasksByUser($user2);
         $tasks = $paginatorInterface->paginate(
@@ -117,14 +120,19 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $task->setUpdatedBy($this->getUser());
             $task = $form->getData();
             $entityManager->persist($task);
             $entityManager->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
+            $getRoles = $this->getUser()->getRoles();
+            if (in_array('ROLE_ADMIN', $getRoles)) {
+                return $this->redirectToRoute('admin_tasks_list');
+            } else {
+                return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
+            }
         }
 
         return $this->render('task/edit.html.twig', [

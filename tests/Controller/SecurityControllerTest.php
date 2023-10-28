@@ -10,13 +10,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
+    /**
+     * @var KernelBrowser
+     */
     private KernelBrowser $client;
 
+    /**
+     * SetUp
+     *
+     * @return void
+     */
     public function setUp(): void
     {
         $this->client = static::createClient();
     }
 
+    /**
+     * Test Should Display Login Page
+     *
+     * @return void
+     */
     public function testShouldDisplayLoginPage(): void
     {
         $crawler = $this->client->request('GET', '/login');
@@ -30,6 +43,11 @@ class SecurityControllerTest extends WebTestCase
         $this->assertRouteSame('login');
     }
 
+    /**
+     * Test Should Be Login Success
+     *
+     * @return void
+     */
     public function testShouldBeLoginSuccess(): void
     {
         $urlGenerator = $this->client->getContainer()->get("router");
@@ -44,9 +62,13 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertRouteSame('homepage');
-
     }
 
+    /**
+     * Test Should Be Login Failed
+     *
+     * @return void
+     */
     public function testShouldBeLoginFailed(): void
     {
         $urlGenerator = $this->client->getContainer()->get("router");
@@ -66,6 +88,11 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorTextContains("div.alert-danger", "Invalid credentials.");
     }
 
+    /**
+     * Test Should Be Logout Success
+     *
+     * @return void
+     */
     public function testShouldBeLogoutSuccess(): void
     {
         $urlGenerator = $this->client->getContainer()->get('router');

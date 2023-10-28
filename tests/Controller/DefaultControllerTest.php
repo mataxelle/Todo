@@ -5,8 +5,13 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
-{
-    public function testDefaultHome(): void
+{    
+    /**
+     * Test Should Display Homepage
+     *
+     * @return void
+     */
+    public function testShouldDisplayHomepage(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
