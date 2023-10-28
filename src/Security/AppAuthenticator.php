@@ -20,7 +20,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'login';
-    
+
     /**
      * __construct
      *
@@ -31,7 +31,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     {
 
     }
-    
+
     /**
      * authenticate
      *
@@ -52,7 +52,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             ]
         );
     }
-    
+
     /**
      * onAuthenticationSuccess
      *
@@ -71,7 +71,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('homepage'));
         // Throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
-    
+
     /**
      * getLoginUrl
      *
