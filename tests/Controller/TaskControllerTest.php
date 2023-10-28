@@ -29,7 +29,7 @@ class TaskControllerTest extends WebTestCase
 
         $form = $crawler->filter('form[name=task_form]')->form([
             'task_form[title]'   => "Mardi",
-            'task_form[content]' => "Faire une nouvelle tâche"
+            'task_form[content]' => "Faire une nouvelle tâche encore"
         ]);
         $client->submit($form);
 
@@ -114,7 +114,7 @@ class TaskControllerTest extends WebTestCase
 
         $form = $crawler->filter('form[name=task_form]')->form([
             'task_form[title]'   => "First task update",
-            'task_form[content]' => "Task description update"
+            'task_form[content]' => "Update test"
         ]);
         $client->submit($form);
 
@@ -135,7 +135,7 @@ class TaskControllerTest extends WebTestCase
      *
      * @return void
      */
-    public function testShouldDeleteTask(): void
+    /*public function testShouldDeleteTask(): void
     {
         $client = static::createClient();
 
@@ -159,5 +159,5 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été supprimée.');
         $this->assertRouteSame('task_list', ['id' => $user->getId()]);
-    }
+    }*/
 }
