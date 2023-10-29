@@ -149,7 +149,7 @@ class TaskController extends AbstractController
 
         $taskRepository->save($task, true);
 
-        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->addFlash('success', $task->isDone() ? sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()) : sprintf('La tâche %s a bien été marquée : à faire.', $task->getTitle()));
 
         return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
     }
