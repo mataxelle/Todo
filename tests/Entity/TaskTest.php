@@ -20,7 +20,8 @@ class TaskTest extends TestCase
              ->setIsDone(true)
              ->setCreatedAt($datetime)
              ->setUpdatedAt($datetime)
-             ->setCreatedBy($user);
+             ->setCreatedBy($user)
+             ->setUpdatedBy($user);
 
         $this->assertTrue($task->getTitle() === 'titre');
         $this->assertTrue($task->getContent() === 'contenu');
@@ -28,6 +29,7 @@ class TaskTest extends TestCase
         $this->assertTrue($task->getCreatedAt() === $datetime);
         $this->assertFalse($task->getUpdatedAt() === new DateTime());
         $this->assertTrue($task->getCreatedBy() === $user);
+        $this->assertTrue($task->getUpdatedBy() === $user);
     }
 
     public function testIsFalse()
@@ -41,7 +43,8 @@ class TaskTest extends TestCase
              ->setIsDone(true)
              ->setCreatedAt($datetime)
              ->setUpdatedAt($datetime)
-             ->setCreatedBy($user);
+             ->setCreatedBy($user)
+             ->setUpdatedBy($user);
 
         $this->assertFalse($task->getTitle() === 'false');
         $this->assertFalse($task->getContent() === 'false');
@@ -49,6 +52,7 @@ class TaskTest extends TestCase
         $this->assertFalse($task->getCreatedAt() === new DateTime());
         $this->assertFalse($task->getUpdatedAt() === new DateTime());
         $this->assertFalse($task->getCreatedBy() === new User());
+        $this->assertFalse($task->getUpdatedBy() === new User());
     }
 
     public function testIsEmpty()
@@ -61,6 +65,7 @@ class TaskTest extends TestCase
         $this->assertEmpty($task->getCreatedAt());
         $this->assertEmpty($task->getUpdatedAt());
         $this->assertEmpty($task->getCreatedBy());
+        $this->assertEmpty($task->getUpdatedBy());
         $this->assertEmpty($task->getId());
     }
 }
