@@ -122,12 +122,38 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été modifiée.');
-        $getRoles = $user->getRoles();
-        if (in_array('ROLE_ADMIN', $getRoles)) {
-            $this->assertRouteSame('admin_tasks_list');
-        } else {
-            $this->assertRouteSame('task_list', ['id' => $user->getId()]);
-        }
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
+    }
+
+    /**
+     * Test Should Finish Task
+     *
+     * @return void
+     */
+    public function testShouldFinishTask(): void
+    {
+        $client = static::createClient();
+
+        $urlGenerator = $client->getContainer()->get('router');
+        $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+        $user = $entityManager->find(User::class, 2);
+
+        $task = $entityManager->getRepository(Task::class)->findOneBy([
+            'createdBy' => $user
+        ]);
+
+        $client->loginUser($user);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate('task_toggle', ['id' => $task->getId()])
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $client->followRedirect();
+
+        $this->assertSelectorTextContains('div.alert-success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 
     /**
@@ -158,11 +184,6 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été supprimée.');
-        $getRoles = $user->getRoles();
-        if (in_array('ROLE_ADMIN', $getRoles)) {
-            $this->assertRouteSame('admin_task_list');
-        } else {
-            $this->assertRouteSame('task_list', ['id' => $user->getId()]);
-        }
+        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 }

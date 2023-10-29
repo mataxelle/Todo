@@ -125,12 +125,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            $getRoles = $this->getUser()->getRoles();
-            if (in_array('ROLE_ADMIN', $getRoles)) {
-                return $this->redirectToRoute('admin_tasks_list');
-            } else {
-                return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
-            }
+            return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
@@ -150,7 +145,7 @@ class TaskController extends AbstractController
     #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour cette action')]
     public function toggleTaskAction(Task $task, TaskRepository $taskRepository): Response
     {
-        $task->toggle(!$task->isDone());
+        $task->setIsDone(!$task->isDone());
 
         $taskRepository->save($task, true);
 
