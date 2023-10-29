@@ -74,12 +74,12 @@ class TaskController extends AbstractController
     /**
      * Create a task
      *
-     * @param  Request                $request       Request
-     * @param  EntityManagerInterface $entityManager EntityManager
+     * @param  Request        $request        Request
+     * @param  TaskRepository $taskRepository TaskRepository
      * @return Response
      */
     #[Route('/task/create', name: 'task_create', methods: ['GET', 'POST'])]
-    public function createAction(Request $request, EntityManagerInterface $entityManager): Response
+    public function createAction(Request $request, TaskRepository $taskRepository): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskFormType::class, $task);
@@ -92,8 +92,7 @@ class TaskController extends AbstractController
             $task->setIsDone(0);
 
             $task = $form->getData();
-            $entityManager->persist($task);
-            $entityManager->flush();
+            $taskRepository->save($task, true);
 
             $this->addFlash('success', 'La tâche a bien été ajoutée.');
 
@@ -106,14 +105,14 @@ class TaskController extends AbstractController
     /**
      * Edit a task
      *
-     * @param  Task                   $task          Task
-     * @param  Request                $request       Request
-     * @param  EntityManagerInterface $entityManager EntityManager
+     * @param  Task           $task           Task
+     * @param  Request        $request        Request
+     * @param  TaskRepository $taskRepository TaskRepository
      * @return Response
      */
     #[Route('/task/{id}/edit', name: 'task_edit', methods: ['GET', 'POST'])]
     #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
-    public function editAction(Task $task, Request $request, EntityManagerInterface $entityManager): Response
+    public function editAction(Task $task, Request $request, TaskRepository $taskRepository): Response
     {
         $form = $this->createForm(TaskFormType::class, $task);
 
@@ -122,8 +121,7 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setUpdatedBy($this->getUser());
             $task = $form->getData();
-            $entityManager->persist($task);
-            $entityManager->flush();
+            $taskRepository->save($task, true);
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -144,39 +142,38 @@ class TaskController extends AbstractController
     /**
      * Finished a task
      *
-     * @param  Tast                   $task          Task
-     * @param  EntityManagerInterface $entityManager EntityManager
+     * @param  Tast           $task           Task
+     * @param  TaskRepository $taskRepository TaskRepository
      * @return Response
      */
     #[Route('/task/{id}/toggle', name: 'task_toggle', methods: ['GET', 'POST'])]
-    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
-    public function toggleTaskAction(Task $task, EntityManagerInterface $entityManager): Response
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour cette action')]
+    public function toggleTaskAction(Task $task, TaskRepository $taskRepository): Response
     {
         $task->toggle(!$task->isDone());
 
-        $entityManager->flush();
+        $taskRepository->save($task, true);
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
+        return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
     }
 
     /**
      * Delete a task
      *
-     * @param  Task                   $task          Task
-     * @param  EntityManagerInterface $entityManager EntityManager
+     * @param  Task           $task           Task
+     * @param  TaskRepository $taskRepository TaskRepository
      * @return Response
      */
     #[Route('/task/{id}/delete', name: 'task_delete', methods: ['GET', 'DELETE'])]
-    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
-    public function deleteTaskAction(Task $task, EntityManagerInterface $entityManager): Response
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour cette action')]
+    public function deleteTaskAction(Task $task, TaskRepository $taskRepository): Response
     {
-        $entityManager->remove($task);
-        $entityManager->flush();
+        $taskRepository->remove($task, true);
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
+        return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
     }
 }

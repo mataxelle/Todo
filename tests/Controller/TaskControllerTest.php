@@ -113,8 +113,8 @@ class TaskControllerTest extends WebTestCase
         );
 
         $form = $crawler->filter('form[name=task_form]')->form([
-            'task_form[title]'   => "First task update",
-            'task_form[content]' => "Update test"
+            'task_form[title]'   => "Luni lundi update",
+            'task_form[content]' => "encore Update test"
         ]);
         $client->submit($form);
 
@@ -124,7 +124,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été modifiée.');
         $getRoles = $user->getRoles();
         if (in_array('ROLE_ADMIN', $getRoles)) {
-            $this->assertRouteSame('admin_task_list');
+            $this->assertRouteSame('admin_tasks_list');
         } else {
             $this->assertRouteSame('task_list', ['id' => $user->getId()]);
         }
@@ -135,7 +135,7 @@ class TaskControllerTest extends WebTestCase
      *
      * @return void
      */
-    /*public function testShouldDeleteTask(): void
+    public function testShouldDeleteTask(): void
     {
         $client = static::createClient();
 
@@ -158,6 +158,11 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été supprimée.');
-        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
-    }*/
+        $getRoles = $user->getRoles();
+        if (in_array('ROLE_ADMIN', $getRoles)) {
+            $this->assertRouteSame('admin_task_list');
+        } else {
+            $this->assertRouteSame('task_list', ['id' => $user->getId()]);
+        }
+    }
 }

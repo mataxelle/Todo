@@ -31,8 +31,8 @@ class TaskRepository extends ServiceEntityRepository
     /**
      * Save
      *
-     * @param  Task  $entity Entity
-     * @param  mixed $flush  Flush
+     * @param  Task $entity Entity
+     * @param  bool $flush  Flush
      * @return void
      */
     public function save(Task $entity, bool $flush = false): void

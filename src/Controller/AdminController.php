@@ -30,7 +30,7 @@ class AdminController extends AbstractController
     public function taskslistAction(TaskRepository $taskRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $taskRepository->findAllOrderedByDate();
-        $tasks = $paginatorInterface->paginate(
+                $tasks = $paginatorInterface->paginate(
             $data,
             $request->query->getInt('page', 1),
             9
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
     #[Route('/users', name: 'users_list', methods: ['GET'])]
     public function userslistAction(UserRepository $userRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
-        $data = $userRepository->findAll();
+        $data = $userRepository->getUsersByDate();
         $users = $paginatorInterface->paginate(
             $data,
             $request->query->getInt('page', 1),
