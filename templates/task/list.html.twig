@@ -23,7 +23,9 @@
 					</div>
 					<div class="card-body">
 						<div class="d-flex justify-content-between">
-							<h5 class="card-title">{{ task.title }}</h5>
+							<h5 class="card-title">
+							    <a href="{{ path('task_show', {'id' : task.id }) }}" class="text-decoration-none">{{ task.title }}</a>
+							</h5>
 							{% if task.isDone %}
 								<span>
 									<i class="bi bi-check-circle"></i>

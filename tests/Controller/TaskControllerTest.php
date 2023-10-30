@@ -41,6 +41,34 @@ class TaskControllerTest extends WebTestCase
     }
 
     /**
+     * Test Should Display one task
+     *
+     * @return void
+     */
+    public function testShouldDisplayOneTask(): void
+    {
+        $client = static::createClient();
+
+        $urlGenerator = $client->getContainer()->get('router');
+        $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
+        $user = $entityManager->find(User::class, 3);
+
+        $task = $entityManager->getRepository(Task::class)->findOneBy([
+            'createdBy' => $user
+        ]);
+
+        $client->loginUser($user);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate('task_show', ['id' => $task->getId()])
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertRouteSame('task_show', ['id' => $task->getId()]);
+    }
+
+    /**
      * Test Should Display User tasksList
      *
      * @return void
@@ -152,7 +180,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
 
-        $this->assertSelectorTextContains('div.alert-success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+        $this->assertSelectorTextContains('div.alert-success', sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()));
         $this->assertRouteSame('task_list', ['id' => $user->getId()]);
     }
 

@@ -23,8 +23,8 @@ class UseControllerTest extends WebTestCase
 
         // To avoid test failure, should change the user name and email every test
         $form = $crawler->filter("form[name=register_form]")->form([
-            'register_form[name]' => "Test Deux",
-            'register_form[email]' => "usertest2@email.com",
+            'register_form[name]' => "Test Quatre",
+            'register_form[email]' => "usertest4@email.com",
             'register_form[password][first]' => "azertyuiop",
             'register_form[password][second]' => "azertyuiop"
         ]);

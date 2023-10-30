@@ -71,6 +71,8 @@ class TaskController extends AbstractController
         ]);
     }
 
+
+
     /**
      * Create a task
      *
@@ -100,6 +102,25 @@ class TaskController extends AbstractController
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * Show a task
+     *
+     * @param  Task                   $task           Task
+     * @param  Request                $request        Request
+     * @param  EntityManagerInterface $entityManager  EntityManager
+     * @return Response
+     */
+    #[Route('/task/{id}', name: 'task_show')]
+    #[Security("is_granted('ROLE_USER') and user === task.getCreatedBy() || is_granted('ROLE_ADMIN')", message: 'Vous n\'avez pas les droits suffisants pour afficher cette page')]
+    public function figure(?Task $task): Response
+    {
+        if (!$task) {
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('task/show.html.twig', ['task' => $task ]);
     }
 
     /**
