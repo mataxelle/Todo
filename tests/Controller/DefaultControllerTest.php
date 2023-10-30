@@ -5,7 +5,7 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
-{    
+{
     /**
      * Test Should Display Homepage
      *
@@ -14,7 +14,7 @@ class DefaultControllerTest extends WebTestCase
     public function testShouldDisplayHomepage(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $client->request('GET', '/');
 
         $this->assertResponseIsSuccessful();
 

@@ -22,12 +22,14 @@ class UseControllerTest extends WebTestCase
         $crawler = $client->request('GET', $urlGenerator->generate('register'));
 
         // To avoid test failure, should change the user name and email every test
-        $form = $crawler->filter("form[name=register_form]")->form([
-            'register_form[name]' => "Test Quatre",
-            'register_form[email]' => "usertest4@email.com",
-            'register_form[password][first]' => "azertyuiop",
-            'register_form[password][second]' => "azertyuiop"
-        ]);
+        $form = $crawler->filter("form[name=register_form]")->form(
+            [
+                'register_form[name]'             => "Test Quatre",
+                'register_form[email]'            => "usertest4@email.com",
+                'register_form[password][first]'  => "azertyuiop",
+                'register_form[password][second]' => "azertyuiop"
+            ]
+        );
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -49,9 +51,11 @@ class UseControllerTest extends WebTestCase
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
         $user = $entityManager->find(User::class, 2);
 
-        $profile = $entityManager->getRepository(User::class)->findOneBy([
-            'id' => $user
-        ]);
+        $profile = $entityManager->getRepository(User::class)->findOneBy(
+            [
+                'id' => $user
+            ]
+        );
 
         $client->loginUser($user);
 
@@ -60,10 +64,12 @@ class UseControllerTest extends WebTestCase
             $urlGenerator->generate('user_edit', ['id' => $profile->getId()])
         );
 
-        $form = $crawler->filter('form[name=user_edit_form]')->form([
-            'user_edit_form[name]'  => "Patricia Demaison",
-            'user_edit_form[email]' => "user0@email.com"
-        ]);
+        $form = $crawler->filter('form[name=user_edit_form]')->form(
+            [
+                'user_edit_form[name]'  => "Patricia Demaison",
+                'user_edit_form[email]' => "user0@email.com"
+            ]
+        );
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -91,9 +97,11 @@ class UseControllerTest extends WebTestCase
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
         $user = $entityManager->find(User::class, 2);
 
-        $password = $entityManager->getRepository(User::class)->findOneBy([
-            'id' => $user
-        ]);
+        $password = $entityManager->getRepository(User::class)->findOneBy(
+            [
+                'id' => $user
+            ]
+        );
 
         $client->loginUser($user);
 

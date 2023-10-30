@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminControllerTest extends WebTestCase
-{    
+{
     /**
      * Test Should Display Admin Tasks List
      *
@@ -16,7 +16,7 @@ class AdminControllerTest extends WebTestCase
     public function testShouldDisplayAdminTasksList(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/admin/tasks');
+        $client->request('GET', '/admin/tasks');
 
         $urlGenerator = $client->getContainer()->get('router');
 
@@ -43,7 +43,7 @@ class AdminControllerTest extends WebTestCase
     public function testShouldDisplayAdminUsersList(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/admin/users');
+        $client->request('GET', '/admin/users');
 
         $urlGenerator = $client->getContainer()->get('router');
 

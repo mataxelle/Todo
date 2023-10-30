@@ -39,7 +39,7 @@ class TaskController extends AbstractController
             6
         );
 
-        return $this->render('task/list.html.twig',
+        return $this->render('task/list.html.twig', 
         [
             'tasks' => $tasks
         ]);

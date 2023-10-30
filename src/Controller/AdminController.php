@@ -30,16 +30,13 @@ class AdminController extends AbstractController
     public function taskslistAction(TaskRepository $taskRepository, PaginatorInterface $paginatorInterface, Request $request): Response
     {
         $data = $taskRepository->findAllOrderedByDate();
-                $tasks = $paginatorInterface->paginate(
+        $tasks = $paginatorInterface->paginate(
             $data,
             $request->query->getInt('page', 1),
             9
         );
 
-        return $this->render('admin/tasks_list.html.twig',
-        [
-            'tasks' => $tasks
-        ]);
+        return $this->render('admin/tasks_list.html.twig', ['tasks' => $tasks ]);
     }
 
     /**
@@ -61,9 +58,6 @@ class AdminController extends AbstractController
             10
         );
 
-        return $this->render('admin/users_list.html.twig',
-        [
-            'users' => $users
-        ]);
+        return $this->render('admin/users_list.html.twig', [ 'users' => $users ]);
     }
 }

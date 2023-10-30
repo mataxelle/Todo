@@ -101,7 +101,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->loginUser($user);
 
-        $crawler = $this->client->request(Request::METHOD_GET, $urlGenerator->generate('logout'));
+        $this->client->request(Request::METHOD_GET, $urlGenerator->generate('logout'));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->client->followRedirect();

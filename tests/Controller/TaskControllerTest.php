@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskControllerTest extends WebTestCase
-{    
+{
     /**
      * Test Should CreateTask
      *
@@ -59,7 +59,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(
+        $client->request(
             Request::METHOD_GET,
             $urlGenerator->generate('task_show', ['id' => $task->getId()])
         );
@@ -83,7 +83,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(
+        $client->request(
             Request::METHOD_GET,
             $urlGenerator->generate('task_list', ['id' => $user->getId()])
         );
@@ -107,7 +107,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(
+        $client->request(
             Request::METHOD_GET,
             $urlGenerator->generate('done_task_list', ['id' => $user->getId()])
         );
@@ -172,7 +172,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(
+        $client->request(
             Request::METHOD_GET,
             $urlGenerator->generate('task_toggle', ['id' => $task->getId()])
         );

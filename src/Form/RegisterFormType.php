@@ -14,33 +14,60 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class RegisterFormType extends AbstractType
 {
+    /**
+     * buildForm
+     *
+     * @param  FormBuilderInterface $builder
+     * @param  array                $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => "Nom d'utilisateur",
-                'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'minMessage' => 'Votre nom d\'utilisateur doit contenir au moins {{ limit }} caractères.',
-                    ]),
-                ],
-                ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'Les deux mots de passe doivent correspondre.',
-                'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Tapez le mot de passe à nouveau'],
-            ])
-            ->add('email', EmailType::class, ['label' => 'Adresse email'])
-        ;
+            ->add(
+                'name', TextType::class,
+                [
+                    'label' => "Nom d'utilisateur",
+                    'constraints' => [
+                        new Length(
+                            [
+                                'min' => 2,
+                                'minMessage' => 'Votre nom d\'utilisateur doit contenir au moins {{ limit }} caractères.',
+                            ]
+                        ),
+                    ],
+                ]
+            )
+            ->add(
+                'password', RepeatedType::class,
+                [
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'Les deux mots de passe doivent correspondre.',
+                    'required' => true,
+                    'first_options'  => [
+                        'label' => 'Mot de passe'
+                    ],
+                    'second_options' => [
+                        'label' => 'Tapez le mot de passe à nouveau'
+                    ],
+                ]
+            )
+            ->add(
+                'email', EmailType::class,
+                [
+                    'label' => 'Adresse email'
+                ]
+            );
     }
 
+    /**
+     * configureOptions
+     *
+     * @param  OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults([ 'data_class' => User::class ]);
     }
 }
