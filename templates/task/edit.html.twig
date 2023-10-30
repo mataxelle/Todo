@@ -1,22 +1,26 @@
 {% extends 'base.html.twig' %}
 
+{% block header_title %}<h1>Modifier <strong>{{ task.title }}</strong></h1>{% endblock %}
+
 {% block body %}
-    {{ form_start(form) }}
-        <div class="input-field mb-3">
-	        {{ form_label(form.title, 'Titre') }}
-	        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
-	        <span class="error">{{ form_errors(form.title) }}</span>
-        </div>
-        <div class="input-field mb-3">
-	        {{ form_label(form.content, 'Contenu') }}
-	        {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
-	        <span class="error">{{ form_errors(form.content) }}</span>
-        </div>
-       
-        <div class="mb-3">
-	        <input type="submit" class="btn btn-success pull-right" value="Modifier" formnovalidate>
-        </div>
-    {{ form_end(form) }}
-    
-    <a href="{{ path('task_list', {'id': app.user.id}) }}" class="btn btn-primary">Retour à la liste des tâches</a>
+	{{ form_start(form, {'attr': {'class': 'col-12 col-md-10 col-lg-7 mx-auto mb-5'}}) }}
+	<div class="input-field mb-3">
+		{{ form_label(form.title, 'Titre') }}
+		{{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+		<span class="error">{{ form_errors(form.title) }}</span>
+	</div>
+	<div class="input-field mb-3">
+		{{ form_label(form.content, 'Contenu') }}
+		{{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+		<span class="error">{{ form_errors(form.content) }}</span>
+	</div>
+
+	<div class="mb-3">
+		<input type="submit" class="btn btn-success pull-right" value="Modifier" formnovalidate>
+	</div>
+	{{ form_end(form) }}
+
+	<div class="col-12 col-md-10 col-lg-7 mx-auto mb-5">
+		<a href="{{ path('task_list', {'id': app.user.id}) }}" class="btn btn-primary">Retour à la liste des tâches</a>
+	</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block header_title %}<h1>Inscription</h1>{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'class': 'col-12 col-md-10 col-lg-7 mx-auto mb-5'}}) }}
         <div class="input-field mb-3">
 	        {{ form_label(form.name, 'Nom') }}
 	        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
@@ -25,5 +25,7 @@
         </div>
     {{ form_end(form) }}
 
-    <a href="{{ path('login') }}">Se connecter</a>
+    <div class="col-12 col-md-10 col-lg-7 mx-auto mb-5">
+        <a href="{{ path('login') }}" class=" text-decoration-none">Se connecter</a>
+    </div>
 {% endblock %}

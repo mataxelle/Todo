@@ -1,0 +1,77 @@
+<header>
+	<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{{ path('homepage') }}">ToDo List
+				<img src="{{ asset('assets/img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms"/>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="{{ path('homepage') }}">Accueil</a>
+					</li>
+					{% if app.user and is_granted('ROLE_ADMIN') %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Dashboard
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" href="{{ path('admin_users_list') }}">Utilisateurs</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('admin_tasks_list') }}">Tâches</a>
+								</li>
+							</ul>
+						</li>
+					{% endif %}
+					{% if app.user %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Mes tâches
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" href="{{ path('task_create') }}">Créer une nouvelle tâche</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('task_list', {'id': app.user.id}) }}">Tâches à faire</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('done_task_list', {'id': app.user.id}) }}">Tâches terminées</a>
+								</li>
+							</ul>
+						</li>
+					{% endif %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Mon compte
+						</a>
+						<ul class="dropdown-menu">
+							{% if app.user %}
+								<li>
+									<a class="dropdown-item" href="{{ path('user_edit', {'id' : app.user.id }) }}">Modifier mes informations</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('user_edit_password', {'id' : app.user.id }) }}">Modifier mon mot de passe</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a>
+								</li>
+                            {% else %}
+                                <li>
+									<a class="dropdown-item" href="{{ path('login') }}">Connexion</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path('register') }}">Inscription</a>
+								</li>
+							{% endif %}
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
