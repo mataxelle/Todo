@@ -36,7 +36,7 @@ class AdminController extends AbstractController
             9
         );
 
-        return $this->render('admin/tasks_list.html.twig', ['tasks' => $tasks ]);
+        return $this->render('admin/tasks_list.html.twig', [ 'totalTasks' => $data, 'tasks' => $tasks ]);
     }
 
     /**
@@ -58,6 +58,6 @@ class AdminController extends AbstractController
             10
         );
 
-        return $this->render('admin/users_list.html.twig', [ 'users' => $users ]);
+        return $this->render('admin/users_list.html.twig', [ 'totalUsers' => $data, 'users' => $users ]);
     }
 }

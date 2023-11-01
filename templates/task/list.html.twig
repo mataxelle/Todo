@@ -22,9 +22,9 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<div class="d-flex justify-content-between">
+						<div class="d-flex justify-content-between mb-3">
 							<h5 class="card-title">
-							    <a href="{{ path('task_show', {'id' : task.id }) }}" class="text-decoration-none">{{ task.title }}</a>
+							    <a href="{{ path('task_show', {'id' : task.id }) }}" class="text-decoration-none link-dark">{{ task.title }}</a>
 							</h5>
 							{% if task.isDone %}
 								<span>
@@ -36,7 +36,7 @@
 								</span>
 							{% endif %}
 						</div>
-						<p class="card-text">{{ task.content }}</p>
+						<p class="card-text mb-4">{{ task.content }}</p>
 						<div class="d-flex justify-content-end">
 							{% if not task.isDone %}
                                 <a href="{{ path('task_toggle', {'id' : task.id }) }}" class="btn btn-info">
