@@ -180,7 +180,7 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $client->followRedirect();
 
-        $this->assertSelectorTextContains('div.alert-success', sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()));
+        $this->assertSelectorTextContains('div.alert-success', $task->isDone() ? sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()) : sprintf('La tâche %s a bien été marquée : à faire.', $task->getTitle()));
         $this->assertRouteSame('task_show', ['id' => $task->getId()]);
     }
 
