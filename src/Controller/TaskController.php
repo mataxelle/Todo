@@ -146,7 +146,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('task_list', ['id' => $task->getCreatedBy()->getId()]);
+            return $this->redirectToRoute('task_show', ['id' => $task->getId()]);
         }
 
         return $this->render('task/edit.html.twig', [
@@ -158,7 +158,7 @@ class TaskController extends AbstractController
     /**
      * Finished a task
      *
-     * @param  Tast           $task           Task
+     * @param  Task           $task           Task
      * @param  TaskRepository $taskRepository TaskRepository
      * @return Response
      */
@@ -172,7 +172,7 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', $task->isDone() ? sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()) : sprintf('La tâche %s a bien été marquée : à faire.', $task->getTitle()));
 
-        return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
+        return $this->redirectToRoute('task_show', ['id' => $task->getId()]);
     }
 
     /**
@@ -190,6 +190,6 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('task_list', ['id' => $this->getUser()->getId()]);
+        return $this->redirectToRoute('homepage');
     }
 }

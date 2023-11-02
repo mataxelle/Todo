@@ -28,9 +28,9 @@ class TaskControllerTest extends WebTestCase
         $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('task_create'));
 
         $form = $crawler->filter('form[name=task_form]')->form([
-            'task_form[title]'   => "Mardi",
-            'task_form[content]' => "Faire une nouvelle tâche encore"
-        ]);
+                'task_form[title]'   => "Mardi",
+                'task_form[content]' => "Faire une nouvelle tâche encore"
+            ]);
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -53,9 +53,10 @@ class TaskControllerTest extends WebTestCase
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
         $user = $entityManager->find(User::class, 3);
 
-        $task = $entityManager->getRepository(Task::class)->findOneBy([
-            'createdBy' => $user
-        ]);
+        $task = $entityManager->getRepository(Task::class)->findOneBy(
+            [
+                'createdBy' => $user
+            ]);
 
         $client->loginUser($user);
 
@@ -83,8 +84,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request(
-            Request::METHOD_GET,
+        $client->request(Request::METHOD_GET,
             $urlGenerator->generate('task_list', ['id' => $user->getId()])
         );
 
@@ -130,8 +130,8 @@ class TaskControllerTest extends WebTestCase
         $user = $entityManager->find(User::class, 2);
 
         $task = $entityManager->getRepository(Task::class)->findOneBy([
-            'createdBy' => $user
-        ]);
+                'createdBy' => $user
+            ]);
 
         $client->loginUser($user);
 
@@ -150,7 +150,7 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été modifiée.');
-        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
+        $this->assertRouteSame('task_show', ['id' => $task->getId()]);
     }
 
     /**
@@ -167,8 +167,8 @@ class TaskControllerTest extends WebTestCase
         $user = $entityManager->find(User::class, 2);
 
         $task = $entityManager->getRepository(Task::class)->findOneBy([
-            'createdBy' => $user
-        ]);
+                'createdBy' => $user
+            ]);
 
         $client->loginUser($user);
 
@@ -181,7 +181,7 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', sprintf('La tâche %s a bien été marquée : faite.', $task->getTitle()));
-        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
+        $this->assertRouteSame('task_show', ['id' => $task->getId()]);
     }
 
     /**
@@ -198,12 +198,12 @@ class TaskControllerTest extends WebTestCase
         $user = $entityManager->find(User::class, 2);
 
         $task = $entityManager->getRepository(Task::class)->findOneBy([
-            'createdBy' => $user
-        ]);
+                'createdBy' => $user
+            ]);
 
         $client->loginUser($user);
 
-        $crawler = $client->request(
+        $client->request(
             Request::METHOD_GET,
             $urlGenerator->generate('task_delete', ['id' => $task->getId()])
         );
@@ -212,6 +212,6 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertSelectorTextContains('div.alert-success', 'Superbe ! La tâche a bien été supprimée.');
-        $this->assertRouteSame('task_list', ['id' => $user->getId()]);
+        $this->assertRouteSame('homepage');
     }
 }
