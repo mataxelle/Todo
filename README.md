@@ -1,9 +1,5 @@
 # Todo
 
-Base du projet #8 : Améliorez un projet existant
-
-https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
-
 ## Table of contents
 
 *  [General info](#general-info)
@@ -14,16 +10,17 @@ https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
 
 ## General info
 
-Project : Todo.
+Project :  Improve an existing project => https://openclassrooms.com/projects/ameliorer-un-projet-existant-1
 
 ## Features
 
 ### Front : users access
 
-*  Homepage : Can found a create task button if connected user.
-*  Task pages
 *  Register / login page
-*  Change user informations and password
+*  Homepage : Can found a create task button if connected user
+*  Tasks list pages
+*  Task page : Task with toggle button
+*  User informations and password update form
 *  Create / Edit figure task form
 
 ### Back : admin access
@@ -53,20 +50,24 @@ Project : Todo.
 
 DATABASE_URL='your database'
 ```
-4. Create a database and for fixtures run :
+4. Create a database run :
 
 ```
-symfony console doctrine:fixtures:load
+php bin/console doctrine:database:create
 ```
-5. Try to connect as an admin with : `admin@email.com` `azertyuiop`
+5. Generate database schema run :
 
-## Add Fixtures tests
+```
+php bin/console make:migration
 
-* symfony console doctrine:fixtures:load
+php bin/console doctrine:migrations:migrate
+```
+6. Load fixtures run :
 
-## Tests
-
-* php bin/phpunit --testdox
+```
+php bin/console doctrine:fixtures:load
+```
+7. Try to connect as an admin with : `admin@email.com` `azertyuiop`
 
 ### Start the environment
 
@@ -74,3 +75,32 @@ symfony console doctrine:fixtures:load
 Composer install
 symfony server:start
 ```
+## Create fixtures for tests
+
+1. Create a .env.test.local file at the root of your project, same level as .env and .env.test, and configure the appropriate values for your test to run.
+
+```
+#Database standard parameters
+
+DATABASE_URL='your database'
+```
+2. Create a database  run :
+
+```
+php bin/console doctrine:database:create --env=test 
+```
+5. Generate database schema run :
+
+```
+php bin/console doctrine:migrations:migrate -n --env=test  
+```
+6. Load fixtures run :
+
+```
+php bin/console doctrine:fixtures:load --env=test 
+```
+## Tests
+
+* php bin/phpunit --testdox
+or
+* php bin/phpunit --coverage-html var/log/test/test-coverage
