@@ -24,6 +24,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         $faker->seed(2);
 
+        // Tasks with user
         for ($i = 0; $i < 50; $i++) {
             $task = new Task();
 
@@ -35,6 +36,17 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
                 ->setCreatedBy($user);
 
             $manager->persist($task);
+        }
+
+        //Task without user
+        for ($i=0; $i < 10; $i++) { 
+            $taskWithoutUser = new Task();
+
+            $taskWithoutUser->setTitle($faker->word(15, true))
+                ->setContent($faker->text(150))
+                ->setIsDone($faker->boolean(50));
+
+            $manager->persist($taskWithoutUser);
         }
 
         $manager->flush();
